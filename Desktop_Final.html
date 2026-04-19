@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sadiya Ahmad - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d9ff;
+            --secondary: #6b5eff;
+            --accent: #ff006e;
+            --bg-dark: #0a0e27;
+            --bg-darker: #050812;
+            --text-light: #e8e8f0;
+            --text-muted: #b0b0c0;
+            --border: #1a1f3a;
+            --window-bg: rgba(26, 31, 58, 0.95);
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #050812 100%);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Desktop Background */
+        .desktop {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(107, 94, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+        }
+
+        /* Taskbar */
+        .taskbar {
+            background: rgba(5, 8, 18, 0.9);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            height: 60px;
+            overflow-x: auto;
+            position: relative;
+            z-index: 1200;
+        }
+
+        .taskbar-logo {
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .taskbar-separator {
+            width: 1px;
+            height: 30px;
+            background: var(--border);
+        }
+
+        .taskbar-apps {
+            display: flex;
+            gap: 0.5rem;
+            flex: 1;
+            overflow-x: auto;
+        }
+
+        .app-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 0.5rem;
+            background: rgba(26, 31, 58, 0.6);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .app-icon:hover {
+            background: rgba(26, 31, 58, 0.9);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.2);
+        }
+
+        .app-icon.active {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+        }
+
+        .taskbar .app-icon.jumping {
+            animation: iconJump 1.8s ease-in-out infinite;
+        }
+
+        .taskbar .app-icon.jumping:nth-child(1) { animation-delay: 0s; }
+        .taskbar .app-icon.jumping:nth-child(2) { animation-delay: 0.12s; }
+        .taskbar .app-icon.jumping:nth-child(3) { animation-delay: 0.24s; }
+        .taskbar .app-icon.jumping:nth-child(4) { animation-delay: 0.36s; }
+        .taskbar .app-icon.jumping:nth-child(5) { animation-delay: 0.48s; }
+        .taskbar .app-icon.jumping:nth-child(6) { animation-delay: 0.6s; }
+        .taskbar .app-icon.jumping:nth-child(7) { animation-delay: 0.72s; }
+
+        @keyframes iconJump {
+            0%, 100% { transform: translateY(0); }
+            20% { transform: translateY(-10px); }
+            40% { transform: translateY(0); }
+        }
+
+        /* Robot Guide */
+        .robot-guide {
+            position: fixed;
+            right: 40px;
+            bottom: 95px;
+            z-index: 1400;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .robot-guide.visible {
+            display: flex;
+        }
+
+        .robot-note {
+            margin-bottom: 10px;
+            padding: 6px 12px;
+            border: 1px solid var(--primary);
+            border-radius: 999px;
+            background: rgba(10, 14, 39, 0.9);
+            color: var(--primary);
+            font-size: 0.8rem;
+            box-shadow: 0 0 15px rgba(0, 217, 255, 0.15);
+            animation: noteFloat 1.5s ease-in-out infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes noteFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .robot-head {
+            width: 70px;
+            height: 55px;
+            background: linear-gradient(135deg, #1b2448, #2c3b75);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.25);
+            margin-bottom: 8px;
+        }
+
+        .robot-eye {
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+            animation: robotBlink 2s infinite;
+        }
+
+        .robot-body {
+            position: relative;
+            width: 55px;
+            height: 80px;
+            background: linear-gradient(135deg, #18203f, #25315f);
+            border: 2px solid var(--primary);
+            border-radius: 14px;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.15);
+        }
+
+        .robot-arm {
+            position: absolute;
+            width: 14px;
+            height: 60px;
+            background: linear-gradient(180deg, #32427a, #1f2a52);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            top: 8px;
+            transform-origin: top center;
+        }
+
+        .left-arm {
+            left: -10px;
+            transform: rotate(18deg);
+        }
+
+        .right-arm {
+            right: -18px;
+            top: 18px;
+            transform: rotate(135deg);
+        }
+
+        .right-arm::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 14px;
+            height: 14px;
+            background: var(--primary);
+            border-radius: 50% 50% 50% 0;
+            transform: translateX(-50%) rotate(-45deg);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
+        }
+
+        @keyframes robotBlink {
+            0%, 44%, 100% { opacity: 1; }
+            45%, 55% { opacity: 0.2; }
+        }
+
+        /* Windows */
+        .window {
+            position: absolute;
+            background: var(--window-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 100;
+            min-width: 400px;
+            min-height: 300px;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .window.active {
+            display: flex;
+            z-index: 1000;
+        }
+
+        .window.minimized {
+            display: none;
+        }
+
+        /* Window Header */
+        .window-header {
+            background: linear-gradient(90deg, rgba(107, 94, 255, 0.2) 0%, rgba(0, 217, 255, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            cursor: move;
+        }
+
+        .window-title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .window-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 0.35rem;
+            background: rgba(26, 31, 58, 0.6);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .window-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            color: var(--primary);
+        }
+
+        /* Window Content */
+        .window-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .window-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .window-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .window-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* Content Sections */
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .content-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .content-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .item-subtitle {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-list {
+            list-style: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .item-list li {
+            padding-left: 1.5rem;
+            margin: 0.35rem 0;
+            position: relative;
+        }
+
+        .item-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(0, 217, 255, 0.15);
+            color: var(--primary);
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.3rem;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        .award-icon {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+        }
+
+        /* Boot Messages */
+        .boot-messages {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0e27 0%, #050812 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
+            padding: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .message-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .boot-message {
+            color: var(--primary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin: 0.5rem 0;
+            opacity: 1;
+            font-family: 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
+            letter-spacing: 0.05em;
+            min-height: 1.5rem;
+        }
+
+        .message-text {
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        /* Startup Screen */
+        .startup-screen {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0e27 0%, #050812 100%);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .startup-logo {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .startup-text {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+            animation: progress 2s ease-in-out forwards;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Cursor Blink */
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        #bootCursor {
+            animation: blink 0.7s infinite;
+        }
+
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+            backdrop-filter: blur(5px);
+            animation: modalFadeIn 0.4s ease-out forwards;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .video-container {
+            width: 90%;
+            max-width: 900px;
+            max-height: 80vh;
+            background: var(--window-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            animation: slideInVideo 0.5s ease-out forwards;
+        }
+
+        @keyframes slideInVideo {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .video-header {
+            background: linear-gradient(90deg, rgba(107, 94, 255, 0.2) 0%, rgba(0, 217, 255, 0.1) 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .video-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .close-video-btn {
+            width: 35px;
+            height: 35px;
+            border: 1px solid var(--border);
+            border-radius: 0.35rem;
+            background: rgba(26, 31, 58, 0.6);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .close-video-btn:hover {
+            background: rgba(0, 217, 255, 0.2);
+            color: var(--primary);
+        }
+
+        .video-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .video-modal {
+                padding: 1rem;
+            }
+
+            .video-container {
+                width: 100%;
+                max-height: 70vh;
+            }
+
+            .video-wrapper {
+                min-height: 300px;
+            }
+
+            .robot-guide {
+                right: 16px;
+                bottom: 90px;
+                transform: scale(0.9);
+                transform-origin: bottom right;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .window {
+                min-width: 90vw;
+                min-height: 60vh;
+            }
+
+            .taskbar {
+                padding: 0.5rem;
+                height: auto;
+            }
+
+            .app-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        .window-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .window-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 217, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Center Button -->
+<div class="ground-zero-wrap" id="groundZeroWrap">
+    <button class="ground-zero-btn" onclick="showVideo()">Ground Zero</button>
+</div>
+
+<!-- Direct Video -->
+<div class="video-section" id="videoSection">
+    <video id="portfolioVideo" autoplay playsinline onclick="closeVideo()">
+        <source src="Robot - Final.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<style>
+    .ground-zero-wrap {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1100;
+    }
+
+    .ground-zero-btn {
+        min-width: 240px;
+        height: 72px;
+        padding: 0 28px;
+        border: 1px solid var(--primary);
+        border-radius: 12px;
+        background: rgba(10, 14, 39, 0.95);
+        color: var(--primary);
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: 0 0 22px rgba(0, 217, 255, 0.18);
+        transition: all 0.25s ease;
+    }
+
+    .ground-zero-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(0, 217, 255, 0.32);
+        background: rgba(20, 28, 60, 0.98);
+    }
+
+    .video-section {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        z-index: 1200;
+    }
+
+    .video-section video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: #000;
+        display: block;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    function showVideo() {
+        const buttonWrap = document.getElementById('groundZeroWrap');
+        const videoSection = document.getElementById('videoSection');
+        const video = document.getElementById('portfolioVideo');
+
+        buttonWrap.style.display = 'none';
+        videoSection.style.display = 'flex';
+
+        video.currentTime = 0;
+        video.play().catch(() => {});
+    }
+
+    function closeVideo() {
+        const buttonWrap = document.getElementById('groundZeroWrap');
+        const videoSection = document.getElementById('videoSection');
+        const video = document.getElementById('portfolioVideo');
+
+        video.pause();
+        video.currentTime = 0;
+        videoSection.style.display = 'none';
+        buttonWrap.style.display = 'flex';
+    }
+
+    const video = document.getElementById('portfolioVideo');
+    video.addEventListener('ended', closeVideo);
+</script>
+    <!-- System Boot Messages -->
+    <div class="boot-messages" id="bootMessages">
+        <div class="message-container" id="messageContainer"></div>
+    </div>
+
+    <!-- Startup Screen -->
+    <div class="startup-screen" id="startupScreen">
+        <div class="startup-logo">S</div>
+        <div class="startup-text">Sadiya Ahmad's Portfolio</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <!-- Desktop -->
+    <div class="desktop"></div>
+
+    <!-- Robot Guide -->
+    <div class="robot-guide" id="robotGuide">
+        <div class="robot-note">Click below</div>
+        <div class="robot-head">
+            <div class="robot-eye"></div>
+            <div class="robot-eye"></div>
+        </div>
+        <div class="robot-body">
+            <div class="robot-arm left-arm"></div>
+            <div class="robot-arm right-arm"></div>
+        </div>
+    </div>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="taskbar-logo">Portfolio</div>
+        <div class="taskbar-separator"></div>
+        <div class="taskbar-apps">
+            <div class="app-icon" onclick="openWindow('education')" title="Education">🎓</div>
+            <div class="app-icon" onclick="openWindow('experience')" title="Experience">💼</div>
+            <div class="app-icon" onclick="openWindow('projects')" title="Projects">🚀</div>
+            <div class="app-icon" onclick="openWindow('skills')" title="Skills">⚙️</div>
+            <div class="app-icon" onclick="openWindow('publications')" title="Publications">📚</div>
+            <div class="app-icon" onclick="openWindow('awards')" title="Awards">🏆</div>
+            <div class="app-icon" onclick="openWindow('contact')" title="Contact">📧</div>
+        </div>
+    </div>
+
+    <!-- Education Window -->
+    <div class="window" id="education">
+        <div class="window-header">
+            <div class="window-title">🎓 Education</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('education')">_</button>
+                <button class="window-btn" onclick="closeWindow('education')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Education</div>
+            
+            <div class="content-item">
+                <div class="item-title">PhD in Computer Science</div>
+                <div class="item-subtitle">Iowa State University</div>
+                <div class="item-text">Ames, Iowa</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Open Science Grid School</div>
+                <div class="item-subtitle">University of Wisconsin</div>
+                <div class="item-text">Madison, Wisconsin</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">MS in Computer Science</div>
+                <div class="item-subtitle">Saint Louis University</div>
+                <div class="item-text">St. Louis, Missouri</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">MS in Computer Science</div>
+                <div class="item-subtitle">Bradley University</div>
+                <div class="item-text">Peoria, Illinois</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">B.Tech in Computer Science</div>
+                <div class="item-subtitle">Integral University</div>
+                <div class="item-text">Lucknow, India</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Window -->
+    <div class="window" id="experience">
+        <div class="window-header">
+            <div class="window-title">💼 Experience</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('experience')">_</button>
+                <button class="window-btn" onclick="closeWindow('experience')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Professional Experience</div>
+            
+            <div class="content-item">
+                <div class="item-title">Instructor - Introduction to Spreadsheets</div>
+                <div class="item-subtitle">Iowa State University</div>
+                <ul class="item-list">
+                    <li>Data formatting using styles, fonts, sizes, layouts</li>
+                    <li>Data analysis using formulas, functions, and logical operators</li>
+                    <li>Data visualization with pivot tools, graphs and charts</li>
+                    <li>Managing Learning Management Systems (Canvas, MyLab IT)</li>
+                </ul>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Head Teaching Assistant</div>
+                <div class="item-subtitle">Iowa State University - Introduction to Spreadsheets</div>
+                <ul class="item-list">
+                    <li>Managed 25 teaching assistants and over 1000 students</li>
+                    <li>Course planning, lab instruction, and grading management</li>
+                    <li>TA performance evaluation and manual writing</li>
+                </ul>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Teaching Assistant - Object Oriented Programming</div>
+                <div class="item-subtitle">Iowa State University</div>
+                <ul class="item-list">
+                    <li>OOP concepts: abstraction, inheritance, polymorphism</li>
+                    <li>Unit testing with JUnit framework</li>
+                    <li>Software engineering process overview</li>
+                </ul>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Graduate Research Assistant</div>
+                <div class="item-subtitle">Saint Louis University</div>
+                <ul class="item-list">
+                    <li>NSF-funded energy-aware coflow scheduling algorithm design</li>
+                    <li>Research publication and conference presentations</li>
+                </ul>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Operations Analyst</div>
+                <div class="item-subtitle">Wells Fargo</div>
+                <ul class="item-list">
+                    <li>Employee evaluation methods using KPI</li>
+                    <li>Process automation using Excel and VBA</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Projects Window -->
+    <div class="window" id="projects">
+        <div class="window-header">
+            <div class="window-title">🚀 Projects</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('projects')">_</button>
+                <button class="window-btn" onclick="closeWindow('projects')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Research Projects</div>
+            
+            <div class="content-item">
+                <div class="item-title">Eclipse-Based Earth Localization</div>
+                <div class="item-subtitle">GPS-Free Navigation for the Moon</div>
+                <div class="item-text">Computational pipeline combining image-based detection of Baily's Beads, 3D lunar topography, and ephemeris-based observer modeling.</div>
+                <div>
+                    <span class="tag">Image Processing</span>
+                    <span class="tag">Lunar Topography</span>
+                    <span class="tag">Celestial Navigation</span>
+                </div>
+                <div class="item-text"><strong>Status:</strong> In Progress</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Sensing the Watts</div>
+                <div class="item-subtitle">AI-Assisted Energy Efficiency in HPC</div>
+                <div class="item-text">Integrating job logs, power metrics, and temperature data to analyze energy consumption using machine learning.</div>
+                <div>
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">Data Analysis</span>
+                    <span class="tag">HPC Systems</span>
+                </div>
+                <div class="item-text"><strong>Status:</strong> Publication Ready</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Energy Coflow Scheduling</div>
+                <div class="item-subtitle">Sustainable Workload Management</div>
+                <div class="item-text">Designing heuristics for network scheduling that optimize energy consumption in datacenter networks.</div>
+                <div>
+                    <span class="tag">Algorithm Design</span>
+                    <span class="tag">Computer Networks</span>
+                    <span class="tag">HPC</span>
+                </div>
+                <div class="item-text"><strong>Status:</strong> Published</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Metagenomic Analysis</div>
+                <div class="item-subtitle">Sample Origin Prediction</div>
+                <div class="item-text">Computational methods for analyzing microbial samples and predicting geographical origins using ensemble machine learning.</div>
+                <div>
+                    <span class="tag">Bioinformatics</span>
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">NGS Data</span>
+                </div>
+                <div class="item-text"><strong>Status:</strong> Published</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skills Window -->
+    <div class="window" id="skills">
+        <div class="window-header">
+            <div class="window-title">⚙️ Skills</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('skills')">_</button>
+                <button class="window-btn" onclick="closeWindow('skills')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Technical Skills</div>
+            
+            <div class="content-item">
+                <div class="item-title">Programming Languages</div>
+                <div>
+                    <span class="tag">Python</span>
+                    <span class="tag">R</span>
+                    <span class="tag">Java</span>
+                    <span class="tag">C++</span>
+                    <span class="tag">Matlab</span>
+                </div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">HPC & Parallel Computing</div>
+                <div>
+                    <span class="tag">MPI</span>
+                    <span class="tag">Slurm</span>
+                    <span class="tag">HTC</span>
+                    <span class="tag">Open Science Grid</span>
+                    <span class="tag">Distributed Computing</span>
+                </div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Frameworks & Technologies</div>
+                <div>
+                    <span class="tag">OpenCV</span>
+                    <span class="tag">PyTorch</span>
+                    <span class="tag">Skyfield</span>
+                    <span class="tag">Scipy</span>
+                    <span class="tag">Data Visualization</span>
+                </div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Soft Skills</div>
+                <div>
+                    <span class="tag">Technical Writing</span>
+                    <span class="tag">Research Presentation</span>
+                    <span class="tag">Mentoring</span>
+                    <span class="tag">Cross-disciplinary Collaboration</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publications Window -->
+    <div class="window" id="publications">
+        <div class="window-header">
+            <div class="window-title">📚 Publications</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('publications')">_</button>
+                <button class="window-btn" onclick="closeWindow('publications')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Publications & Presentations</div>
+            
+            <div class="content-item">
+                <div class="item-title">Eclipse-Based Earth Localization Using Lunar Limb Topography</div>
+                <div class="item-text"><strong>Authors:</strong> Ahmad S, and Luna AB</div>
+                <div class="item-text"><strong>Venue:</strong> International Space Development Conference (ISDC) | 2025</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Sensing the Watts: AI-Assisted Data Processing</div>
+                <div class="item-text"><strong>Authors:</strong> Ahmad S</div>
+                <div class="item-text"><strong>Venue:</strong> Greater Chicago Area System Research (GCASR) Workshop | 2025</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Energy-aware Coflow Scheduling for Sustainable Workload</div>
+                <div class="item-text"><strong>Authors:</strong> Ahmad S, Esposito F, and Coronado E</div>
+                <div class="item-text"><strong>Venue:</strong> 17th International Conference on Network and Service Management (CNSM) | 2021</div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Metagenomic Data Analysis with Probability-Based Reduced Dataset</div>
+                <div class="item-text"><strong>Authors:</strong> Gardner C, Ahmad S, Ahn TH</div>
+                <div class="item-text"><strong>Venue:</strong> Critical Assessment of Massive Data Analysis (CAMDA) | 2020</div>
+                <div class="item-text" style="color: var(--accent); margin-top: 0.5rem;">🏆 Best Presentation Award</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Awards Window -->
+    <div class="window" id="awards">
+        <div class="window-header">
+            <div class="window-title">🏆 Awards</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('awards')">_</button>
+                <button class="window-btn" onclick="closeWindow('awards')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Awards & Recognition</div>
+            
+            <div class="content-item">
+                <span class="award-icon">⭐</span>
+                <div class="item-title">Graduate Research Spotlight</div>
+                <div class="item-text">IEEE-Eta Kappa Nu • 2025</div>
+            </div>
+
+            <div class="content-item">
+                <span class="award-icon">🏆</span>
+                <div class="item-title">Teaching Excellence Award</div>
+                <div class="item-text">Iowa State University • 2024</div>
+            </div>
+
+            <div class="content-item">
+                <span class="award-icon">✨</span>
+                <div class="item-title">Outstanding Performance Award</div>
+                <div class="item-text">National Space Society • 2023</div>
+            </div>
+
+            <div class="content-item">
+                <span class="award-icon">🎖️</span>
+                <div class="item-title">Best Presentation Award</div>
+                <div class="item-text">CAMDA Conference • 2020</div>
+            </div>
+
+            <div class="content-item">
+                <span class="award-icon">🥈</span>
+                <div class="item-title">Runner-up Food Insecurity Challenge</div>
+                <div class="item-text">Iowa State University • 2022</div>
+            </div>
+
+            <div class="content-item">
+                <span class="award-icon">🚀</span>
+                <div class="item-title">IEEE-Eta Kappa Nu Honor Society</div>
+                <div class="item-text">Member since 2022</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Window -->
+    <div class="window" id="contact">
+        <div class="window-header">
+            <div class="window-title">📧 Contact</div>
+            <div class="window-controls">
+                <button class="window-btn" onclick="minimizeWindow('contact')">_</button>
+                <button class="window-btn" onclick="closeWindow('contact')">×</button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="section-header">Contact Information</div>
+            
+            <div class="content-item">
+                <div class="item-title">Email</div>
+                <div class="item-text"><a href="mailto:sadiya@iastate.edu" style="color: var(--primary); text-decoration: none;">sadiya@iastate.edu</a></div>
+            </div>
+
+            <div class="content-item">
+                <div class="item-title">Institution</div>
+                <div class="item-text">Department of Computer Science</div>
+                <div class="item-text">Iowa State University</div>
+                <div class="item-text">Ames, Iowa</div>
+            </div>
+
+
+            <div class="content-item">
+                <div class="item-title">Research Interests</div>
+                <div>
+                    <span class="tag">High Performance Computing</span>
+                    <span class="tag">Space Science</span>
+                    <span class="tag">Sustainable Computing</span>
+                    <span class="tag">Energy Efficiency</span>
+                    <span class="tag">Bioinformatics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function playTypeSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioContext.currentTime;
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                const pitches = [120, 140, 160, 180];
+                const randomPitch = pitches[Math.floor(Math.random() * pitches.length)];
+                
+                osc.frequency.setValueAtTime(randomPitch, now);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } catch (e) {
+            }
+        }
+
+        const messages = [
+            "<Establishing Relay Channel>",
+            "<Relay Protocol: Active>",
+            "<Fetching network data...... complete>",
+            "<Residual relay noise detected... Filtered>",
+            "<Parsing incoming packets .....| cyclic redundancy check: pass>",
+            "<Link quality: Optimal>",
+            "<Communication established>"
+        ];
+
+        async function typeMessages() {
+            const container = document.getElementById('messageContainer');
+            const typingSpeed = 25;
+            
+            for (let msgIndex = 0; msgIndex < messages.length; msgIndex++) {
+                const msg = messages[msgIndex];
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'boot-message';
+                msgDiv.innerHTML = '<span class="message-text"></span>';
+                container.appendChild(msgDiv);
+                
+                const textSpan = msgDiv.querySelector('.message-text');
+                
+                for (let charIndex = 0; charIndex < msg.length; charIndex++) {
+                    const char = msg[charIndex];
+                    textSpan.textContent += char;
+                    playTypeSound();
+                    await new Promise(resolve => setTimeout(resolve, typingSpeed));
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+            
+            const cursorDiv = document.createElement('div');
+            cursorDiv.className = 'boot-message';
+            cursorDiv.innerHTML = '<span class="message-text" id="bootCursor">_</span>';
+            container.appendChild(cursorDiv);
+
+            return cursorDiv;
+        }
+
+        function startIconJump() {
+            document.querySelectorAll('.taskbar .app-icon').forEach(icon => {
+                icon.classList.add('jumping');
+            });
+        }
+
+        function showRobotGuide() {
+            document.getElementById('robotGuide').classList.add('visible');
+        }
+
+        async function runBootSequence() {
+            const cursorDiv = await typeMessages();
+
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            if (cursorDiv) {
+                cursorDiv.remove();
+            }
+
+            document.getElementById('bootMessages').style.display = 'none';
+
+            const startupScreen = document.getElementById('startupScreen');
+            startupScreen.style.display = 'flex';
+
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            startupScreen.style.display = 'none';
+
+            startIconJump();
+            showRobotGuide();
+
+            document.getElementById('videoModal').classList.add('active');
+        }
+
+        runBootSequence();
+
+        function closeVideoModal() {
+            const videoModal = document.getElementById('videoModal');
+            videoModal.classList.remove('active');
+            setTimeout(() => {
+                videoModal.style.display = 'none';
+            }, 400);
+        }
+
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        let windowPositions = {};
+        let windowZIndex = 100;
+
+        function openWindow(windowId) {
+            const window = document.getElementById(windowId);
+            const appIcon = event.target.closest('.app-icon');
+            
+            document.querySelectorAll('.app-icon').forEach(icon => icon.classList.remove('active'));
+            if (appIcon) appIcon.classList.add('active');
+
+            document.querySelectorAll('.window.active').forEach(w => {
+                w.classList.remove('active');
+            });
+
+            window.classList.remove('minimized');
+            window.classList.add('active');
+            window.style.zIndex = ++windowZIndex;
+
+            if (!windowPositions[windowId]) {
+                const offset = Object.keys(windowPositions).length * 30;
+                window.style.left = (50 + offset) + 'px';
+                window.style.top = (50 + offset) + 'px';
+                windowPositions[windowId] = true;
+            }
+
+            makeWindowDraggable(windowId);
+        }
+
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            window.classList.remove('active');
+            const appIcon = document.querySelector(`[onclick="openWindow('${windowId}')"]`);
+            if (appIcon) appIcon.classList.remove('active');
+        }
+
+        function minimizeWindow(windowId) {
+            const window = document.getElementById(windowId);
+            window.classList.add('minimized');
+            const appIcon = document.querySelector(`[onclick="openWindow('${windowId}')"]`);
+            if (appIcon) appIcon.classList.remove('active');
+        }
+
+        function makeWindowDraggable(windowId) {
+            const window = document.getElementById(windowId);
+            const header = window.querySelector('.window-header');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+
+            header.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                initialX = e.clientX - window.offsetLeft;
+                initialY = e.clientY - window.offsetTop;
+                window.style.zIndex = ++windowZIndex;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    window.style.left = Math.max(0, currentX) + 'px';
+                    window.style.top = Math.max(0, currentY) + 'px';
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        }
+    </script>
+</body>
+</html>
